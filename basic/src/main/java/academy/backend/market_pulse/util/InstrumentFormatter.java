@@ -1,9 +1,9 @@
-package main.java.academy.backend.market_pulse.util;
+package academy.backend.market_pulse.util;
 
-import main.java.academy.backend.market_pulse.model.Bond;
-import main.java.academy.backend.market_pulse.model.Etf;
-import main.java.academy.backend.market_pulse.model.Instrument;
-import main.java.academy.backend.market_pulse.model.Stock;
+import academy.backend.market_pulse.model.Bond;
+import academy.backend.market_pulse.model.Etf;
+import academy.backend.market_pulse.model.Instrument;
+import academy.backend.market_pulse.model.Stock;
 
 /**
  * Наивный способ описать инструмент по типу — через {@code instanceof}.

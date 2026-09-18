@@ -1,4 +1,4 @@
-package main.java.academy.backend.market_pulse.model;
+package academy.backend.market_pulse.model;
 
 public class Etf extends Instrument {
 
@@ -16,5 +16,10 @@ public class Etf extends Instrument {
     @Override
     public String getDescription() {
         return "ETF, отслеживает индекс: " + trackingIndex;
+    }
+
+    @Override
+    public String getType() {
+        return "ETF";
     }
 }

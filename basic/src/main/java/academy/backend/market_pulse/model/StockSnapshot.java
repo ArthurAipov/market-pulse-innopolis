@@ -1,4 +1,4 @@
-package main.java.academy.backend.market_pulse.model;
+package academy.backend.market_pulse.model;
 
 import java.math.BigDecimal;
 
