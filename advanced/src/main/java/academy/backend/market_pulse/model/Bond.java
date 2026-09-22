@@ -24,7 +24,11 @@ public class Bond extends Instrument {
 
     @Override
     public String getDescription() {
-        // TODO: описание облигации — купон и год погашения.
-        throw new UnsupportedOperationException("getDescription для Bond");
+        return "Облигация, купон: " + couponRate + "%, погашение: " + maturityYear;
+    }
+
+    @Override
+    public String getType() {
+        return "BOND";
     }
 }

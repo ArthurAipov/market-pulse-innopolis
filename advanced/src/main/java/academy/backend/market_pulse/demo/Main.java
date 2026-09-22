@@ -1,33 +1,28 @@
 package academy.backend.market_pulse.demo;
 
-import java.math.BigDecimal;
-import java.util.List;
+import academy.backend.market_pulse.cli.AddCommand;
+import academy.backend.market_pulse.cli.ListCommand;
+import academy.backend.market_pulse.cli.MarketPulseCli;
+import academy.backend.market_pulse.cli.SearchCommand;
+import academy.backend.market_pulse.repository.InMemoryInstrumentRepository;
+import academy.backend.market_pulse.repository.InstrumentRepository;
+import picocli.CommandLine;
 
-import academy.backend.market_pulse.model.Bond;
-import academy.backend.market_pulse.model.Currency;
-import academy.backend.market_pulse.model.Etf;
-import academy.backend.market_pulse.model.Instrument;
-import academy.backend.market_pulse.model.Stock;
-
+/**
+ * Точка входа CLI. Команды регистрируются вручную через {@code addSubcommand}, а не через
+ * атрибут {@code subcommands} аннотации {@code @Command}: у команд нет конструктора без
+ * аргументов, picocli не смог бы создать их самостоятельно по одному классу — каждой нужен уже
+ * готовый {@code repository}.
+ */
 public class Main {
 
     public static void main(String[] args) {
-        Stock sber = new Stock("SBER", "Сбербанк", Currency.RUB,
-                "Financials", new BigDecimal("6.5"));
-        Bond ofz = new Bond("SU26238RMFS4", "ОФЗ-26238", Currency.RUB,
-                new BigDecimal("7.1"), 2035);
-        Etf tmos = new Etf("TMOS", "Тинькофф iMOEX", Currency.RUB, "MOEX");
-
-        // NOTICE: toString() каждого инструмента вызывает getDescription() —
-        // до реализации метода в Stock/Bond/Etf этот вызов бросает исключение.
-        List<Instrument> instruments = List.of(sber, ofz, tmos);
-        for (Instrument instrument : instruments) {
-            System.out.println(instrument);
-        }
-
-        // TODO: построить Quote для sber и ofz, вывести котировки и дивиденды по ним.
-
-        // TODO: построить Portfolio, добавить позиции (sber x10, ofz x5, tmos x3)
-        // и вывести список позиций.
+        InstrumentRepository repository = new InMemoryInstrumentRepository();
+        CommandLine cli = new CommandLine(new MarketPulseCli())
+                .addSubcommand(new SearchCommand(repository))
+                .addSubcommand(new AddCommand(repository))
+                .addSubcommand(new ListCommand(repository));
+        int exitCode = cli.execute(args);
+        System.exit(exitCode);
     }
 }
