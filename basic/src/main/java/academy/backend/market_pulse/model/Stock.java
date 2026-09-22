@@ -1,11 +1,16 @@
 package academy.backend.market_pulse.model;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
-public class Stock extends Instrument {
+/**
+ * Акция. В отличие от {@link Bond} и {@link Etf}, только у акций есть
+ * дивидендная доходность — поэтому {@code getDividends} объявлен здесь,
+ * а не в {@link Instrument}, и реализует {@link DividendPaying}.
+ */
+public class Stock extends Instrument implements DividendPaying {
 
     private final String sector;
-    // NOTICE: доходность и цена — всегда BigDecimal, не double (деньги).
     private final BigDecimal dividendYield;
 
     public Stock(String ticker, String name, Currency currency,
@@ -19,14 +24,30 @@ public class Stock extends Instrument {
         return sector;
     }
 
-    @Override
-    public String getDescription() {
-        // TODO: описание акции — сектор.
-        throw new UnsupportedOperationException("getDescription для Stock");
+    /**
+     * Дивидендная доходность в процентах — единственный числовой атрибут акции на этом этапе
+     * проекта, используется в том числе как «аналог цены» в фильтрации ({@code PriceFilter}).
+     */
+    public BigDecimal getDividendYield() {
+        return dividendYield;
     }
 
+    @Override
+    public String getDescription() {
+        return "Акция, сектор: " + sector;
+    }
+
+    @Override
+    public String getType() {
+        return "STOCK";
+    }
+
+    /**
+     * Годовая дивидендная доходность в валюте инструмента: цена × доходность / 100.
+     */
+    @Override
     public BigDecimal getDividends(BigDecimal currentPrice) {
-        // TODO: currentPrice * dividendYield / 100, с явным RoundingMode.
-        throw new UnsupportedOperationException("getDividends для Stock");
+        return currentPrice.multiply(dividendYield)
+                .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
     }
 }
