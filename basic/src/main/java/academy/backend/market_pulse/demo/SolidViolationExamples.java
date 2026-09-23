@@ -1,15 +1,10 @@
 package academy.backend.market_pulse.demo;
 
+import academy.backend.market_pulse.model.*;
+
 import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.util.List;
-
-import academy.backend.market_pulse.model.Bond;
-import academy.backend.market_pulse.model.Currency;
-import academy.backend.market_pulse.model.Etf;
-import academy.backend.market_pulse.model.Instrument;
-import academy.backend.market_pulse.model.Quote;
-import academy.backend.market_pulse.model.Stock;
 
 /**
  * Каталог нарушений принципов SOLID — по одному примеру на принцип, на домене Market Pulse.
