@@ -1,5 +1,6 @@
 package academy.backend.market_pulse.repository;
 
+import academy.backend.market_pulse.exception.DuplicateTickerException;
 import academy.backend.market_pulse.model.*;
 
 import java.math.BigDecimal;
@@ -18,9 +19,11 @@ public class InMemoryInstrumentRepository implements InstrumentRepository {
 
     @Override
     public void add(Instrument instrument) {
+        if (findByTicker(instrument.getTicker()).isPresent()) {
+            throw new DuplicateTickerException(instrument.getTicker());
+        }
         instruments[size++] = instrument;
     }
-
     @Override
     public Optional<Instrument> findByTicker(String ticker) {
         for (Instrument instrument : this) {
