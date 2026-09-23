@@ -1,11 +1,7 @@
 package academy.backend.market_pulse.cli;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.function.Predicate;
 
 import academy.backend.market_pulse.filter.FilterFactory;
 import academy.backend.market_pulse.filter.InstrumentFilter;
@@ -42,26 +38,13 @@ public class ListCommand implements Callable<Integer> {
 
     @Override
     public Integer call() {
-        Predicate<Instrument> filter = (type == null)
-                ? _ -> true
-                : instrument -> instrument.getClass().getSimpleName().equalsIgnoreCase(type);
+        InstrumentFilter filter = FilterFactory.create(type, ticker, currency, priceOperator, price);
 
-        if (currency != null) {
-            filter = filter.and(instrument -> instrument.getCurrency() == currency);
-        }
-
-        List<Instrument> matched = new ArrayList<>();
         for (Instrument instrument : repository) {
-            if (filter.test(instrument)) {
-                matched.add(instrument);
+            if (filter.matches(instrument)) {
+                System.out.println(instrument.getDescription());
             }
         }
-
-        if (ticker != null) {
-            matched.sort(Comparator.comparing(Instrument::getTicker));
-        }
-
-        matched.forEach(instrument -> System.out.println(instrument.getDescription()));
         return 0;
     }
 }
