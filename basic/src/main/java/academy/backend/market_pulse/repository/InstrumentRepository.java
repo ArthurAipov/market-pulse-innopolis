@@ -1,5 +1,6 @@
 package academy.backend.market_pulse.repository;
 
+import academy.backend.market_pulse.exception.DuplicateTickerException;
 import academy.backend.market_pulse.model.Instrument;
 
 import java.util.Iterator;
@@ -17,6 +18,9 @@ public class InstrumentRepository implements Iterable<Instrument> {
     private int size = 0;
 
     public void add(Instrument instrument) {
+        if (findByTicker(instrument.getTicker()).isPresent()) {
+            throw new DuplicateTickerException(instrument.getTicker());
+        }
         instruments[size++] = instrument;
     }
 
