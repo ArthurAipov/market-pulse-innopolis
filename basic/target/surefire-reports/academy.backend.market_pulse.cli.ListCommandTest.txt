@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: academy.backend.market_pulse.cli.ListCommandTest
+-------------------------------------------------------------------------------
+Tests run: 22, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.063 s -- in academy.backend.market_pulse.cli.ListCommandTest

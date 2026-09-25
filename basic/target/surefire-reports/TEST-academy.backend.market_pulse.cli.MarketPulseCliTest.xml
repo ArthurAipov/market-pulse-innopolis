@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="academy.backend.market_pulse.cli.MarketPulseCliTest" time="0.162" tests="13" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="25"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/Users/arturaipov/Desktop/market-pulse-innopolis/basic/target/test-classes:/Users/arturaipov/Desktop/market-pulse-innopolis/basic/target/classes:/Users/arturaipov/.m2/repository/org/junit/jupiter/junit-jupiter/6.0.3/junit-jupiter-6.0.3.jar:/Users/arturaipov/.m2/repository/org/junit/jupiter/junit-jupiter-api/6.0.3/junit-jupiter-api-6.0.3.jar:/Users/arturaipov/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/Users/arturaipov/.m2/repository/org/junit/platform/junit-platform-commons/6.0.3/junit-platform-commons-6.0.3.jar:/Users/arturaipov/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/arturaipov/.m2/repository/org/jspecify/jspecify/1.0.0/jspecify-1.0.0.jar:/Users/arturaipov/.m2/repository/org/junit/jupiter/junit-jupiter-params/6.0.3/junit-jupiter-params-6.0.3.jar:/Users/arturaipov/.m2/repository/org/junit/jupiter/junit-jupiter-engine/6.0.3/junit-jupiter-engine-6.0.3.jar:/Users/arturaipov/.m2/repository/org/junit/platform/junit-platform-engine/6.0.3/junit-platform-engine-6.0.3.jar:/Users/arturaipov/.m2/repository/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar:/Users/arturaipov/.m2/repository/info/picocli/picocli/4.7.7/picocli-4.7.7.jar:/Users/arturaipov/.m2/repository/cglib/cglib/3.3.0/cglib-3.3.0.jar:/Users/arturaipov/.m2/repository/org/ow2/asm/asm/7.1/asm-7.1.jar:"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.vendor.url" value="https://java.oracle.com/"/>
+    <property name="os.name" value="Mac OS X"/>
+    <property name="java.vm.specification.version" value="25"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="RU"/>
+    <property name="sun.boot.library.path" value="/Users/arturaipov/Library/Java/JavaVirtualMachines/openjdk-25.0.1/Contents/Home/lib"/>
+    <property name="sun.java.command" value="/Users/arturaipov/Desktop/market-pulse-innopolis/basic/target/surefire/surefirebooter-20260925151512207_3.jar /Users/arturaipov/Desktop/market-pulse-innopolis/basic/target/surefire 2026-09-25T15-15-12_159-jvmRun1 surefire-20260925151512207_1tmp surefire_0-20260925151512207_2tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="/Users/arturaipov/Desktop/market-pulse-innopolis/basic/target/test-classes:/Users/arturaipov/Desktop/market-pulse-innopolis/basic/target/classes:/Users/arturaipov/.m2/repository/org/junit/jupiter/junit-jupiter/6.0.3/junit-jupiter-6.0.3.jar:/Users/arturaipov/.m2/repository/org/junit/jupiter/junit-jupiter-api/6.0.3/junit-jupiter-api-6.0.3.jar:/Users/arturaipov/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/Users/arturaipov/.m2/repository/org/junit/platform/junit-platform-commons/6.0.3/junit-platform-commons-6.0.3.jar:/Users/arturaipov/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/arturaipov/.m2/repository/org/jspecify/jspecify/1.0.0/jspecify-1.0.0.jar:/Users/arturaipov/.m2/repository/org/junit/jupiter/junit-jupiter-params/6.0.3/junit-jupiter-params-6.0.3.jar:/Users/arturaipov/.m2/repository/org/junit/jupiter/junit-jupiter-engine/6.0.3/junit-jupiter-engine-6.0.3.jar:/Users/arturaipov/.m2/repository/org/junit/platform/junit-platform-engine/6.0.3/junit-platform-engine-6.0.3.jar:/Users/arturaipov/.m2/repository/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar:/Users/arturaipov/.m2/repository/info/picocli/picocli/4.7.7/picocli-4.7.7.jar:/Users/arturaipov/.m2/repository/cglib/cglib/3.3.0/cglib-3.3.0.jar:/Users/arturaipov/.m2/repository/org/ow2/asm/asm/7.1/asm-7.1.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/Users/arturaipov"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2025-10-21"/>
+    <property name="java.home" value="/Users/arturaipov/Library/Java/JavaVirtualMachines/openjdk-25.0.1/Contents/Home"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/Users/arturaipov/Desktop/market-pulse-innopolis/basic"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="apple.awt.application.name" value="ForkedBooter"/>
+    <property name="surefire.real.class.path" value="/Users/arturaipov/Desktop/market-pulse-innopolis/basic/target/surefire/surefirebooter-20260925151512207_3.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="25.0.1+8-27"/>
+    <property name="user.name" value="arturaipov"/>
+    <property name="stdout.encoding" value="US-ASCII"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="15.0.1"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="localRepository" value="/Users/arturaipov/.m2/repository"/>
+    <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
+    <property name="java.io.tmpdir" value="/var/folders/pl/jch0c7ys68998fcdx5t0940m0000gn/T/"/>
+    <property name="java.version" value="25.0.1"/>
+    <property name="user.dir" value="/Users/arturaipov/Desktop/market-pulse-innopolis/basic"/>
+    <property name="os.arch" value="aarch64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="native.encoding" value="US-ASCII"/>
+    <property name="java.library.path" value="/Users/arturaipov/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="stderr.encoding" value="US-ASCII"/>
+    <property name="java.vendor" value="Oracle Corporation"/>
+    <property name="java.vm.version" value="25.0.1+8-27"/>
+    <property name="stdin.encoding" value="US-ASCII"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeBig"/>
+    <property name="java.class.version" value="69.0"/>
+  </properties>
+  <testcase name="addsSearchesAndListsInstrumentInSameRepository(String)[1]" classname="academy.backend.market_pulse.cli.MarketPulseCliTest" time="0.029"/>
+  <testcase name="addsSearchesAndListsInstrumentInSameRepository(String)[2]" classname="academy.backend.market_pulse.cli.MarketPulseCliTest" time="0.003"/>
+  <testcase name="addsSearchesAndListsInstrumentInSameRepository(String)[3]" classname="academy.backend.market_pulse.cli.MarketPulseCliTest" time="0.002"/>
+  <testcase name="helpWorksWithoutRequiredArguments(String)[1]" classname="academy.backend.market_pulse.cli.MarketPulseCliTest" time="0.008"/>
+  <testcase name="helpWorksWithoutRequiredArguments(String)[2]" classname="academy.backend.market_pulse.cli.MarketPulseCliTest" time="0.001"/>
+  <testcase name="helpWorksWithoutRequiredArguments(String)[3]" classname="academy.backend.market_pulse.cli.MarketPulseCliTest" time="0.001"/>
+  <testcase name="helpWorksWithoutRequiredArguments(String)[4]" classname="academy.backend.market_pulse.cli.MarketPulseCliTest" time="0.003"/>
+  <testcase name="invalidCurrencyIsUsageErrorAndDoesNotAddInstrument" classname="academy.backend.market_pulse.cli.MarketPulseCliTest" time="0.003"/>
+  <testcase name="invalidTypeIsUsageErrorAndDoesNotAddInstrument(String)[1]" classname="academy.backend.market_pulse.cli.MarketPulseCliTest" time="0.002"/>
+  <testcase name="invalidTypeIsUsageErrorAndDoesNotAddInstrument(String)[2]" classname="academy.backend.market_pulse.cli.MarketPulseCliTest" time="0.003"/>
+  <testcase name="repeatedListExecutionDoesNotReusePreviousFilter" classname="academy.backend.market_pulse.cli.MarketPulseCliTest" time="0.003"/>
+  <testcase name="blankTickerIsUsageErrorAndDoesNotAddInstrument" classname="academy.backend.market_pulse.cli.MarketPulseCliTest" time="0.001"/>
+  <testcase name="missingTickerReturnsNotFound" classname="academy.backend.market_pulse.cli.MarketPulseCliTest" time="0.001"/>
+</testsuite>

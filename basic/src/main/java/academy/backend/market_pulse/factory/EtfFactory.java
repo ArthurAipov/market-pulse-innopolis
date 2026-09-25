@@ -12,8 +12,6 @@ public class EtfFactory implements InstrumentFactory {
 
     @Override
     public Instrument create(String ticker, String name, Currency currency) {
-        // TODO: создать Etf(ticker, name, currency, trackingIndex) — trackingIndex через CLI пока
-        // не собирается, использовать значение по умолчанию.
-        throw new UnsupportedOperationException("create для EtfFactory");
+        return new Etf(ticker, name, currency, "");
     }
 }
