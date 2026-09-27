@@ -1,9 +1,9 @@
 package academy.backend.market_pulse.filter;
 
-import java.math.BigDecimal;
-
 import academy.backend.market_pulse.model.Instrument;
 import academy.backend.market_pulse.model.Stock;
+
+import java.math.BigDecimal;
 
 /**
  * Отбор по цене — применим только к {@link Stock}: остальные типы инструментов сегодня не несут
@@ -11,6 +11,7 @@ import academy.backend.market_pulse.model.Stock;
  * роли цены — дивидендная доходность ({@link Stock#getDividendYield()}), единственный числовой
  * атрибут акции на этом этапе проекта.
  */
+@Deprecated
 public class PriceFilter implements InstrumentFilter {
 
     public enum Operator {

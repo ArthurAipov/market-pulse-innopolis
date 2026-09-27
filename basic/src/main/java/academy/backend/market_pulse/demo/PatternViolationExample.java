@@ -1,14 +1,14 @@
 package academy.backend.market_pulse.demo;
 
-import java.math.BigDecimal;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import academy.backend.market_pulse.model.Bond;
 import academy.backend.market_pulse.model.Currency;
 import academy.backend.market_pulse.model.Instrument;
 import academy.backend.market_pulse.model.Stock;
+
+import java.math.BigDecimal;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Одна и та же задача, решённая двумя способами: без паттерна GoF и с ним.
