@@ -3,13 +3,18 @@ package academy.backend.market_pulse.demo;
 import academy.backend.market_pulse.cli.AddCommand;
 import academy.backend.market_pulse.cli.ListCommand;
 import academy.backend.market_pulse.cli.MarketPulseCli;
+import academy.backend.market_pulse.cli.QuoteCommand;
 import academy.backend.market_pulse.cli.SearchCommand;
+import academy.backend.market_pulse.cli.WatchCommand;
 import academy.backend.market_pulse.factory.InstrumentFactories;
 import academy.backend.market_pulse.model.Currency;
 import academy.backend.market_pulse.model.Instrument;
 import academy.backend.market_pulse.model.Quote;
+import academy.backend.market_pulse.model.Watchlist;
 import academy.backend.market_pulse.repository.InMemoryInstrumentRepository;
 import academy.backend.market_pulse.repository.InstrumentRepository;
+import academy.backend.market_pulse.service.QuoteService;
+import academy.backend.market_pulse.service.QuoteSource;
 import picocli.CommandLine;
 
 import java.math.BigDecimal;
@@ -25,10 +30,15 @@ public class Main {
 
     public static void main(String[] args) {
         InstrumentRepository repository = new InMemoryInstrumentRepository();
+        Watchlist watchlist = new Watchlist();
+        QuoteService quoteService = new QuoteService(new QuoteSource(sampleQuotes()));
+
         CommandLine cli = new CommandLine(new MarketPulseCli())
                 .addSubcommand(new SearchCommand(repository))
                 .addSubcommand(new AddCommand(repository))
-                .addSubcommand(new ListCommand(repository));
+                .addSubcommand(new ListCommand(repository))
+                .addSubcommand(new WatchCommand(watchlist))
+                .addSubcommand(new QuoteCommand(quoteService));
         int exitCode = cli.execute(args);
         System.exit(exitCode);
     }
