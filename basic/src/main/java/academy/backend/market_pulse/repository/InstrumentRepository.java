@@ -8,9 +8,8 @@ import academy.backend.market_pulse.model.Instrument;
 import academy.backend.market_pulse.model.Stock;
 
 import java.math.BigDecimal;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * Хранилище инструментов поверх внутреннего массива фиксированного размера. Перебор — через
@@ -19,8 +18,7 @@ import java.util.Optional;
  */
 public class InstrumentRepository implements Iterable<Instrument> {
 
-    private final Instrument[] instruments = new Instrument[100];
-    private int size = 0;
+    private final Map<String, Instrument> instruments = new HashMap<>();
 
     public InstrumentRepository() {
         // Стартовые данные для демонстрации CLI: без них каждый запуск начинается с пустого списка.
@@ -30,10 +28,10 @@ public class InstrumentRepository implements Iterable<Instrument> {
     }
 
     public void add(Instrument instrument) {
-        if (findByTicker(instrument.getTicker()).isPresent()) {
+        if (instruments.containsKey(instrument.getTicker())) {
             throw new DuplicateTickerException(instrument.getTicker());
         }
-        instruments[size++] = instrument;
+        instruments.put(instrument.getTicker(), instrument);
     }
 
     public Optional<Instrument> findByTicker(String ticker) {
@@ -47,21 +45,10 @@ public class InstrumentRepository implements Iterable<Instrument> {
 
     @Override
     public Iterator<Instrument> iterator() {
-        return new Iterator<>() {
-            private int cursor = 0;
+        return instruments.values().iterator();
+    }
 
-            @Override
-            public boolean hasNext() {
-                return cursor < size;
-            }
-
-            @Override
-            public Instrument next() {
-                if (!hasNext()) {
-                    throw new NoSuchElementException();
-                }
-                return instruments[cursor++];
-            }
-        };
+    public Stream<Instrument> stream() {
+        return instruments.values().stream();
     }
 }

@@ -2,11 +2,7 @@ package academy.backend.market_pulse.service;
 
 import academy.backend.market_pulse.model.Quote;
 
-import java.util.ArrayDeque;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * Обработка пользовательских запросов котировок. Запросы копятся в очереди {@link Queue} и
@@ -40,5 +36,16 @@ public class QuoteService {
 
     public Optional<Quote> cached(String ticker) {
         return Optional.ofNullable(cache.get(ticker.toUpperCase()));
+    }
+
+    /**
+     * Удобная обёртка «запросить и получить»: кладёт запрос в очередь, обрабатывает её и отдаёт
+     * котировку из кеша. Используется командами, которым нужна котировка по конкретному тикеру
+     * прямо сейчас (см. «План семинара.md», семинар 6, команда `compare`).
+     */
+    public Optional<Quote> quoteFor(String ticker) {
+        request(ticker);
+        processAll();
+        return cached(ticker);
     }
 }
