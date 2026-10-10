@@ -49,4 +49,4 @@ void example() throws IOException {
 | Блокировка | всегда | опционально |
 | Поток на соединение | 1 : 1 | 1 : N (через `Selector`) |
 | Где используется | `HttpClientTInvestApiClient` (этап 2) | `Reactor` (этап 6) |
-| Структура данных | нет | [`ByteBuffer`](ByteBuffer.md) |
+| Структура данных | нет | [`ByteBuffer`](ByteBuffer/1.%20Анатомия.md) |
