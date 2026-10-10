@@ -1,10 +1,13 @@
 package academy.backend.market_pulse.model;
 
+import lombok.Getter;
+
 /**
  * Базовая абстракция финансового инструмента. Инкапсулирует общие для всех
  * инструментов данные (тикер, название, валюта) и защищает их инварианты
  * прямо в конструкторе.
  */
+@Getter
 public abstract class Instrument {
 
     private final String ticker;
@@ -18,18 +21,6 @@ public abstract class Instrument {
         this.ticker = ticker;
         this.name = name;
         this.currency = currency;
-    }
-
-    public String getTicker() {
-        return ticker;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Currency getCurrency() {
-        return currency;
     }
 
     public abstract String getDescription();

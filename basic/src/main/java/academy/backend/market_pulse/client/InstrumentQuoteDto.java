@@ -5,11 +5,14 @@ import java.math.BigDecimal;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Getter;
+
 /**
  * Запись ответа мокового {@code instruments-service}: инструмент и его текущая котировка в одном
  * объекте — упрощение ради учебного мока (настоящий T-Invest API разносит каталог инструментов и
  * рыночные данные по разным сервисам). См. «План семинара.md», семинар 7, этап 2.
  */
+@Getter
 public class InstrumentQuoteDto {
 
     private final String ticker;
@@ -33,29 +36,5 @@ public class InstrumentQuoteDto {
         this.currency = currency;
         this.price = price;
         this.changePercent = changePercent;
-    }
-
-    public String getTicker() {
-        return ticker;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public BigDecimal getChangePercent() {
-        return changePercent;
     }
 }

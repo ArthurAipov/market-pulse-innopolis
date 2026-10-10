@@ -2,6 +2,7 @@ package academy.backend.market_pulse.cli;
 
 import academy.backend.market_pulse.model.Watchlist;
 import academy.backend.market_pulse.persistence.WatchlistStore;
+import lombok.RequiredArgsConstructor;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Parameters;
 
@@ -9,6 +10,7 @@ import java.nio.file.Path;
 import java.util.concurrent.Callable;
 
 @Command(name = "watch", description = "Отслеживать инструмент: добавить тикер в watchlist или показать текущий список")
+@RequiredArgsConstructor
 public class WatchCommand implements Callable<Integer> {
 
     @Parameters(index = "0", arity = "0..1", description = "Тикер инструмента (без аргумента — показать watchlist)")
@@ -17,12 +19,6 @@ public class WatchCommand implements Callable<Integer> {
     private final Watchlist watchlist;
     private final WatchlistStore watchlistStore;
     private final Path watchlistPath;
-
-    public WatchCommand(Watchlist watchlist, WatchlistStore watchlistStore, Path watchlistPath) {
-        this.watchlist = watchlist;
-        this.watchlistStore = watchlistStore;
-        this.watchlistPath = watchlistPath;
-    }
 
     @Override
     public Integer call() {

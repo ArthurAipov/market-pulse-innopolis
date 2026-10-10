@@ -13,6 +13,7 @@ import academy.backend.market_pulse.history.PricePoint;
 import academy.backend.market_pulse.model.Quote;
 import academy.backend.market_pulse.model.Watchlist;
 import academy.backend.market_pulse.persistence.FileBackedQuoteRepository;
+import lombok.RequiredArgsConstructor;
 import picocli.CommandLine.Command;
 
 /**
@@ -23,6 +24,7 @@ import picocli.CommandLine.Command;
  * цен каждого обновлённого инструмента — материал для будущей статистики.
  */
 @Command(name = "update", description = "Обновить на диске котировки отслеживаемых инструментов")
+@RequiredArgsConstructor
 public class UpdateCommand implements Callable<Integer> {
 
     private final TInvestApiClient client;
@@ -30,15 +32,6 @@ public class UpdateCommand implements Callable<Integer> {
     private final FileBackedQuoteRepository repository;
     private final PriceHistoryStore historyStore;
     private final Path historyDirectory;
-
-    public UpdateCommand(TInvestApiClient client, Watchlist watchlist, FileBackedQuoteRepository repository,
-            PriceHistoryStore historyStore, Path historyDirectory) {
-        this.client = client;
-        this.watchlist = watchlist;
-        this.repository = repository;
-        this.historyStore = historyStore;
-        this.historyDirectory = historyDirectory;
-    }
 
     @Override
     public Integer call() {
