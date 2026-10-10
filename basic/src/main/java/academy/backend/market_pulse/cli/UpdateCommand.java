@@ -1,11 +1,17 @@
 package academy.backend.market_pulse.cli;
 
+import java.nio.file.Path;
+import java.time.Instant;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
+import academy.backend.market_pulse.audit.UserAction;
+import academy.backend.market_pulse.audit.UserActionLog;
 import academy.backend.market_pulse.client.TInvestApiClient;
 import academy.backend.market_pulse.client.TInvestApiException;
+import academy.backend.market_pulse.history.PriceHistoryStore;
+import academy.backend.market_pulse.history.PricePoint;
 import academy.backend.market_pulse.model.Quote;
 import academy.backend.market_pulse.model.Watchlist;
 import academy.backend.market_pulse.persistence.FileBackedQuoteRepository;
@@ -15,7 +21,8 @@ import picocli.CommandLine.Command;
  * Обновляет на диске котировки отслеживаемых инструментов (см. «План семинара.md», семинар 7,
  * этап 4): запрашивает актуальные данные через {@link TInvestApiClient} и формирует новый файл с
  * обновлёнными значениями — то, что потом переживает перезапуск CLI, в отличие от
- * {@code QuoteService}, который ничего не сохраняет между вызовами.
+ * {@code QuoteService}, который ничего не сохраняет между вызовами. Заодно пишет точку в историю
+ * цен каждого обновлённого инструмента — материал для будущей статистики.
  */
 @Command(name = "update", description = "Обновить на диске котировки отслеживаемых инструментов")
 public class UpdateCommand implements Callable<Integer> {
@@ -23,11 +30,18 @@ public class UpdateCommand implements Callable<Integer> {
     private final TInvestApiClient client;
     private final Watchlist watchlist;
     private final FileBackedQuoteRepository repository;
+    private final PriceHistoryStore historyStore;
+    private final Path historyDirectory;
+    private final UserActionLog actionLog;
 
-    public UpdateCommand(TInvestApiClient client, Watchlist watchlist, FileBackedQuoteRepository repository) {
+    public UpdateCommand(TInvestApiClient client, Watchlist watchlist, FileBackedQuoteRepository repository,
+            PriceHistoryStore historyStore, Path historyDirectory, UserActionLog actionLog) {
         this.client = client;
         this.watchlist = watchlist;
         this.repository = repository;
+        this.historyStore = historyStore;
+        this.historyDirectory = historyDirectory;
+        this.actionLog = actionLog;
     }
 
     @Override
@@ -51,6 +65,14 @@ public class UpdateCommand implements Callable<Integer> {
                 .toList();
 
         repository.save(trackedQuotes);
+
+        Instant now = Instant.now();
+        for (Quote quote : trackedQuotes) {
+            historyStore.append(historyDirectory,
+                    new PricePoint(quote.getInstrument().getTicker(), now, quote.getPrice()));
+        }
+        actionLog.record(UserAction.QUOTES_UPDATED, "count=" + trackedQuotes.size());
+
         System.out.println("Обновлено котировок: " + trackedQuotes.size() + " -> " + repository.getPath());
         return 0;
     }

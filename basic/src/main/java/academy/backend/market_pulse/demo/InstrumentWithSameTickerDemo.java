@@ -1,5 +1,6 @@
 package academy.backend.market_pulse.demo;
 
+import academy.backend.market_pulse.audit.UserActionLog;
 import academy.backend.market_pulse.cli.AddCommand;
 import academy.backend.market_pulse.cli.ListCommand;
 import academy.backend.market_pulse.cli.MarketPulseCli;
@@ -7,6 +8,7 @@ import academy.backend.market_pulse.cli.SearchCommand;
 import academy.backend.market_pulse.repository.InstrumentRepository;
 import picocli.CommandLine;
 
+import java.nio.file.Path;
 import java.util.Arrays;
 
 /**
@@ -17,9 +19,10 @@ import java.util.Arrays;
 public class InstrumentWithSameTickerDemo {
     static void main() {
         InstrumentRepository repository = new InstrumentRepository();
+        UserActionLog actionLog = new UserActionLog(Path.of("logs"));
         CommandLine cli = new CommandLine(new MarketPulseCli())
                 .addSubcommand(new SearchCommand(repository))
-                .addSubcommand(new AddCommand(repository))
+                .addSubcommand(new AddCommand(repository, actionLog))
                 .addSubcommand(new ListCommand(repository));
         System.out.println("===============add instruments==============");
         var args = new String[]{"add", "STOCK", "SBER", "Сбербанк", "RUB"};

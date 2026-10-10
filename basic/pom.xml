@@ -59,6 +59,22 @@
             <version>4.12.0</version>
         </dependency>
 
+        <!-- Демонстрация форматов перед самостоятельной работой (семинар 7, этап 4): тот же Jackson,
+             но для YAML -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-yaml</artifactId>
+            <version>2.18.2</version>
+        </dependency>
+
+        <!-- Демонстрация форматов перед самостоятельной работой (семинар 7, этап 4): сторонняя
+             библиотека для CSV, не велосипед на split(",") -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-csv</artifactId>
+            <version>1.12.0</version>
+        </dependency>
+
         <!-- Тесты: JUnit 5 -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>

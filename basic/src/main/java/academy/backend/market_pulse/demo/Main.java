@@ -1,10 +1,13 @@
 package academy.backend.market_pulse.demo;
 
+import academy.backend.market_pulse.audit.UserActionLog;
 import academy.backend.market_pulse.cli.*;
 import academy.backend.market_pulse.client.HttpClientTInvestApiClient;
 import academy.backend.market_pulse.client.TInvestApiClient;
 import academy.backend.market_pulse.client.TInvestApiProperties;
 import academy.backend.market_pulse.factory.InstrumentFactories;
+import academy.backend.market_pulse.history.PriceHistoryStore;
+import academy.backend.market_pulse.history.PriceHistoryStoreReference;
 import academy.backend.market_pulse.model.Currency;
 import academy.backend.market_pulse.model.Instrument;
 import academy.backend.market_pulse.model.Quote;
@@ -13,6 +16,8 @@ import academy.backend.market_pulse.persistence.FileBackedQuoteRepository;
 import academy.backend.market_pulse.persistence.QuoteFileStore;
 import academy.backend.market_pulse.persistence.QuoteFileStoreReference;
 import academy.backend.market_pulse.persistence.QuoteFileWatcher;
+import academy.backend.market_pulse.persistence.WatchlistStore;
+import academy.backend.market_pulse.persistence.WatchlistStoreReference;
 import academy.backend.market_pulse.repository.InstrumentRepository;
 import academy.backend.market_pulse.service.QuoteService;
 import academy.backend.market_pulse.service.QuoteSource;
@@ -33,9 +38,19 @@ public class Main {
 
     public static void main(String[] args) {
         InstrumentRepository repository = new InstrumentRepository();
-        Watchlist watchlist = new Watchlist();
         QuoteSource source = new QuoteSource(sampleQuotes(repository));
         QuoteService quoteService = new QuoteService(source);
+
+        // Пользовательские действия (добавление инструмента, watchlist, обновление котировок,
+        // в будущем — покупка/продажа) — партиционированный по дате лог, независимый от остального
+        // хранилища.
+        UserActionLog actionLog = new UserActionLog(Path.of("logs"));
+
+        // Watchlist переживает перезапуск CLI — читается при старте, дописывается на диск сразу
+        // при изменении (см. WatchCommand).
+        WatchlistStore watchlistStore = new WatchlistStoreReference();
+        Path watchlistPath = Path.of("data", "watchlist.json");
+        Watchlist watchlist = new Watchlist(watchlistStore.load(watchlistPath));
 
         // Семинар 7: клиент к instruments-service (моковый сервер в Docker, см.
         // docker/mockserver) — настройки отдельным классом, клиент создаётся один раз здесь и
@@ -43,22 +58,27 @@ public class Main {
         TInvestApiClient apiClient = new HttpClientTInvestApiClient(TInvestApiProperties.localMock());
 
         // Семинар 7: котировки отслеживаемых инструментов — на диске, а не только в памяти
-        // процесса. QuoteFileStoreReference — эталон; студенты на этапе 5 пишут свой.
+        // процесса. QuoteFileStoreReference — эталон; студенты на этапе 6 пишут свой.
         QuoteFileStore quoteFileStore = new QuoteFileStoreReference();
         FileBackedQuoteRepository fileBackedQuotes =
                 new FileBackedQuoteRepository(quoteFileStore, Path.of("data", "quotes.txt"));
         new QuoteFileWatcher(fileBackedQuotes).start();
 
+        // История цен — для будущей статистики: новая точка (новый файл) на каждое update.
+        PriceHistoryStore historyStore = new PriceHistoryStoreReference();
+        Path historyDirectory = Path.of("data", "history");
+
         CommandLine cli = new CommandLine(new MarketPulseCli())
                 .addSubcommand(new SearchCommand(repository))
-                .addSubcommand(new AddCommand(repository))
+                .addSubcommand(new AddCommand(repository, actionLog))
                 .addSubcommand(new ListCommand(repository))
-                .addSubcommand(new WatchCommand(watchlist))
+                .addSubcommand(new WatchCommand(watchlist, watchlistStore, watchlistPath, actionLog))
                 .addSubcommand(new QuoteCommand(quoteService))
                 .addSubcommand(new StatsCommand(source))
                 .addSubcommand(new CompareCommand(quoteService))
                 .addSubcommand(new MoversCommand(source))
-                .addSubcommand(new UpdateCommand(apiClient, watchlist, fileBackedQuotes));
+                .addSubcommand(new UpdateCommand(apiClient, watchlist, fileBackedQuotes,
+                        historyStore, historyDirectory, actionLog));
 
         int exitCode = cli.execute(args);
         System.exit(exitCode);

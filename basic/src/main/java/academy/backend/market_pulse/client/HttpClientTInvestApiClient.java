@@ -1,6 +1,8 @@
 package academy.backend.market_pulse.client;
 
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -18,9 +20,12 @@ import academy.backend.market_pulse.model.Quote;
  * Опорная реализация {@link TInvestApiClient} — пишется вживую семинаристом (см. «План семинара.md»,
  * семинар 7, этап 2). {@link HttpClient} создаётся один раз в конструкторе и переиспользуется на все
  * запросы — повторное TCP/TLS-рукопожатие на каждый вызов было бы дорогим и бессмысленным, раз клиент
- * всё равно стучится в один и тот же адрес.
+ * всё равно стучится в один и тот же адрес. Запросы и ответы логируются (этап 2) — {@link Logger} из
+ * стандартной библиотеки, без внешнего логгера: тема семинара — сеть, а не выбор логирующего фреймворка.
  */
 public class HttpClientTInvestApiClient implements TInvestApiClient {
+
+    private static final Logger LOGGER = System.getLogger(HttpClientTInvestApiClient.class.getName());
 
     private final HttpClient httpClient;
     private final TInvestApiProperties properties;
@@ -42,15 +47,22 @@ public class HttpClientTInvestApiClient implements TInvestApiClient {
                 .GET()
                 .build();
 
+        LOGGER.log(Level.INFO, "-> {0} {1}", request.method(), request.uri());
+
         HttpResponse<String> response;
         try {
             response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException e) {
+            LOGGER.log(Level.WARNING, "-> {0} {1}: ошибка соединения — {2}",
+                    request.method(), request.uri(), e.getMessage());
             throw new TInvestApiException("Не удалось выполнить запрос к instruments-service", e);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new TInvestApiException("Запрос к instruments-service прерван", e);
         }
+
+        LOGGER.log(Level.INFO, "<- {0} {1}: статус {2}, тело {3} байт",
+                request.method(), request.uri(), response.statusCode(), response.body().length());
 
         if (response.statusCode() != 200) {
             throw new TInvestApiException(
