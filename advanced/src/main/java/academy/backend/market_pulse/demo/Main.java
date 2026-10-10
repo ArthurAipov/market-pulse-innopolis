@@ -1,11 +1,18 @@
 package academy.backend.market_pulse.demo;
 
 import academy.backend.market_pulse.cli.*;
+import academy.backend.market_pulse.client.HttpClientTInvestApiClient;
+import academy.backend.market_pulse.client.TInvestApiClient;
+import academy.backend.market_pulse.client.TInvestApiProperties;
 import academy.backend.market_pulse.factory.InstrumentFactories;
 import academy.backend.market_pulse.model.Currency;
 import academy.backend.market_pulse.model.Instrument;
 import academy.backend.market_pulse.model.Quote;
 import academy.backend.market_pulse.model.Watchlist;
+import academy.backend.market_pulse.persistence.FileBackedQuoteRepository;
+import academy.backend.market_pulse.persistence.QuoteFileStore;
+import academy.backend.market_pulse.persistence.QuoteFileStoreReference;
+import academy.backend.market_pulse.persistence.QuoteFileWatcher;
 import academy.backend.market_pulse.repository.InMemoryInstrumentRepository;
 import academy.backend.market_pulse.repository.InstrumentRepository;
 import academy.backend.market_pulse.service.QuoteService;
@@ -13,6 +20,7 @@ import academy.backend.market_pulse.service.QuoteSource;
 import picocli.CommandLine;
 
 import java.math.BigDecimal;
+import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +39,19 @@ public class Main {
         QuoteSource source = new QuoteSource(sampleQuotes(repository));
         QuoteService quoteService = new QuoteService(source);
 
+        // Семинар 7: клиент к instruments-service (моковый сервер в Docker, см.
+        // docker/mockserver) — настройки отдельным классом, клиент создаётся один раз здесь и
+        // дальше инжектится через конструктор.
+        TInvestApiClient apiClient = new HttpClientTInvestApiClient(TInvestApiProperties.localMock());
+
+        // Самостоятельная работа (см. «Требования к файловому хранилищу.md»): котировки
+        // отслеживаемых инструментов — на диске, а не только в памяти процесса.
+        // QuoteFileStoreReference — эталон для сверки в начале семинара 8.
+        QuoteFileStore quoteFileStore = new QuoteFileStoreReference();
+        FileBackedQuoteRepository fileBackedQuotes =
+                new FileBackedQuoteRepository(quoteFileStore, Path.of("data", "quotes.json"));
+        new QuoteFileWatcher(fileBackedQuotes).start();
+
         CommandLine cli = new CommandLine(new MarketPulseCli())
                 .addSubcommand(new SearchCommand(repository))
                 .addSubcommand(new AddCommand(repository))
@@ -40,7 +61,8 @@ public class Main {
                 .addSubcommand(new StatsCommand(source))
                 .addSubcommand(new CompareCommand(quoteService))
                 .addSubcommand(new MoversCommand(source))
-                .addSubcommand(new HistoryCommand(samplePriceHistory()));
+                .addSubcommand(new HistoryCommand(samplePriceHistory()))
+                .addSubcommand(new UpdateCommand(apiClient, watchlist, fileBackedQuotes));
 
         int exitCode = cli.execute(args);
         System.exit(exitCode);
