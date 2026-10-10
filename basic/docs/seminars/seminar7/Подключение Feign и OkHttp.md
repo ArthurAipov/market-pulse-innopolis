@@ -37,22 +37,24 @@ InstrumentsServiceApi api = Feign.builder()
 интерсепторами, таймаутами, пулом соединений.
 
 ```java
-OkHttpClient client = new OkHttpClient.Builder()
-        .connectTimeout(properties.getConnectTimeout().toMillis(), TimeUnit.MILLISECONDS)
-        .readTimeout(properties.getRequestTimeout().toMillis(), TimeUnit.MILLISECONDS)
-        .build();
+void example() {
+    OkHttpClient client = new OkHttpClient.Builder()
+            .connectTimeout(properties.getConnectTimeout().toMillis(), TimeUnit.MILLISECONDS)
+            .readTimeout(properties.getRequestTimeout().toMillis(), TimeUnit.MILLISECONDS)
+            .build();
 
-Request request = new Request.Builder()
-        .url(properties.getBaseUrl() + "/v1/instruments")
-        .get()
-        .build();
+    Request request = new Request.Builder()
+            .url(properties.getBaseUrl() + "/v1/instruments")
+            .get()
+            .build();
 
-try (Response response = client.newCall(request).execute()) {
-    if (!response.isSuccessful()) {
-        throw new TInvestApiException("instruments-service вернул неожиданный статус: " + response.code());
+    try (Response response = client.newCall(request).execute()) {
+        if (!response.isSuccessful()) {
+            throw new TInvestApiException("instruments-service вернул неожиданный статус: " + response.code());
+        }
+        String json = response.body().string();
+        // дальше — ObjectMapper.readValue(json, ...), как в HttpClient-варианте
     }
-    String json = response.body().string();
-    // дальше — ObjectMapper.readValue(json, ...), как в HttpClient-варианте
 }
 ```
 
