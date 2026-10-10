@@ -26,10 +26,12 @@ public class ReactorTInvestApiClient implements TInvestApiClient, AutoCloseable 
 
     private final Reactor reactor;
     private final InetSocketAddress address;
+    private final String mockScenario;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public ReactorTInvestApiClient(TInvestApiProperties properties) {
         this.address = new InetSocketAddress(properties.getHost(), properties.getPort());
+        this.mockScenario = properties.getMockScenario();
         this.reactor = new Reactor();
         this.reactor.start();
     }
@@ -46,7 +48,8 @@ public class ReactorTInvestApiClient implements TInvestApiClient, AutoCloseable 
 
     /** Асинхронный путь — несколько вызовов подряд делят один и тот же поток событийного цикла. */
     public CompletableFuture<List<Quote>> fetchQuotesAsync() {
-        byte[] request = RawHttpProtocol.buildGetRequest(address.getHostName(), address.getPort(), "/v1/instruments");
+        byte[] request = RawHttpProtocol.buildGetRequest(
+                address.getHostName(), address.getPort(), "/v1/instruments", mockScenario);
         return reactor.submit(address, request).thenApply(this::parseQuotes);
     }
 

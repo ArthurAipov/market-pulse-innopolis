@@ -2,6 +2,8 @@ package academy.backend.market_pulse.client.impl.reactor;
 
 import java.nio.charset.StandardCharsets;
 
+import academy.backend.market_pulse.config.TInvestApiProperties;
+
 /**
  * Минимальный HTTP/1.1 поверх сырых байтов — ровно столько, сколько нужно для одного {@code GET} и
  * его ответа (см. «План семинара.md», семинар 7, этап 6). Не разбирает {@code Content-Length} и
@@ -15,12 +17,21 @@ final class RawHttpProtocol {
     }
 
     static byte[] buildGetRequest(String host, int port, String path) {
-        String request = "GET " + path + " HTTP/1.1\r\n"
-                + "Host: " + host + ":" + port + "\r\n"
-                + "Accept: application/json\r\n"
-                + "Connection: close\r\n"
-                + "\r\n";
-        return request.getBytes(StandardCharsets.US_ASCII);
+        return buildGetRequest(host, port, path, null);
+    }
+
+    /** Если {@code mockScenario} не {@code null}, добавляет заголовок {@code X-Mock-Scenario}. */
+    static byte[] buildGetRequest(String host, int port, String path, String mockScenario) {
+        StringBuilder request = new StringBuilder()
+                .append("GET ").append(path).append(" HTTP/1.1\r\n")
+                .append("Host: ").append(host).append(':').append(port).append("\r\n")
+                .append("Accept: application/json\r\n");
+        if (mockScenario != null) {
+            request.append(TInvestApiProperties.MOCK_SCENARIO_HEADER).append(": ").append(mockScenario)
+                    .append("\r\n");
+        }
+        request.append("Connection: close\r\n").append("\r\n");
+        return request.toString().getBytes(StandardCharsets.US_ASCII);
     }
 
     record ParsedResponse(int statusCode, String body) {

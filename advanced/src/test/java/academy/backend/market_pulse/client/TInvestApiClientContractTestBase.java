@@ -1,6 +1,7 @@
 package academy.backend.market_pulse.client;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.Duration;
@@ -62,5 +63,23 @@ public abstract class TInvestApiClientContractTestBase {
         List<Quote> quotes = createClient(propertiesForServer()).fetchQuotes();
 
         assertEquals(0, quotes.size());
+    }
+
+    @Test
+    void fetchQuotes_sendsMockScenarioHeaderWhenConfigured() {
+        server.respondWith(200, "[]");
+
+        createClient(propertiesForServer().withMockScenario("error")).fetchQuotes();
+
+        assertEquals("error", server.getLastMockScenario());
+    }
+
+    @Test
+    void fetchQuotes_omitsMockScenarioHeaderByDefault() {
+        server.respondWith(200, "[]");
+
+        createClient(propertiesForServer()).fetchQuotes();
+
+        assertNull(server.getLastMockScenario());
     }
 }

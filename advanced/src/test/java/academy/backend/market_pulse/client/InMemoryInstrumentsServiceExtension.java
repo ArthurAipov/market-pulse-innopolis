@@ -24,9 +24,15 @@ class InMemoryInstrumentsServiceExtension implements BeforeEachCallback, AfterEa
     private volatile String responseBody = "[]";
     private volatile int responseStatus = 200;
     private volatile long responseDelayMillis = 0;
+    private volatile String lastMockScenario;
 
     int getPort() {
         return server.getAddress().getPort();
+    }
+
+    /** Значение заголовка {@code X-Mock-Scenario} последнего запроса; {@code null}, если его не было. */
+    String getLastMockScenario() {
+        return lastMockScenario;
     }
 
     void respondWith(int status, String body) {
@@ -45,6 +51,7 @@ class InMemoryInstrumentsServiceExtension implements BeforeEachCallback, AfterEa
     public void beforeEach(ExtensionContext context) throws IOException {
         server = HttpServer.create(new InetSocketAddress("localhost", 0), 0);
         server.createContext("/v1/instruments", exchange -> {
+            lastMockScenario = exchange.getRequestHeaders().getFirst("X-Mock-Scenario");
             if (responseDelayMillis > 0) {
                 try {
                     Thread.sleep(responseDelayMillis);

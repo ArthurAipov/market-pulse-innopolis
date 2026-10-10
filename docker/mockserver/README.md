@@ -22,6 +22,17 @@ curl -H "X-Mock-Scenario: error" http://localhost:1080/v1/instruments       # м
 curl -H "X-Mock-Scenario: timeout" http://localhost:1080/v1/instruments     # 10 секунд, затем []
 ```
 
+## Сбой из приложения
+
+Клиенты приложения сами отправляют `X-Mock-Scenario`, если задана переменная окружения
+`MARKET_PULSE_MOCK_SCENARIO` (`error` | `timeout` | `ok`; пусто — заголовок не отправляется):
+
+```bash
+MARKET_PULSE_MOCK_SCENARIO=error java ... academy.backend.market_pulse.demo.Main update
+```
+
+Перед `update` в watchlist должен быть хотя бы один тикер (`watch SBER`).
+
 ## Остановка
 
 ```bash

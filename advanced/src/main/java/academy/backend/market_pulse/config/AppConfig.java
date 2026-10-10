@@ -68,7 +68,11 @@ public class AppConfig {
         // Семинар 7: клиент к instruments-service (моковый сервер в Docker, см.
         // docker/mockserver) — настройки отдельным классом, клиент создаётся один раз здесь и
         // дальше инжектится через конструктор.
-        this.apiClient = new HttpClientTInvestApiClient(TInvestApiProperties.localMock());
+        // Переменная окружения MARKET_PULSE_MOCK_SCENARIO (error | timeout | ok) включает сбой на
+        // стороне мокового сервера: MARKET_PULSE_MOCK_SCENARIO=error java ... update
+        TInvestApiProperties properties = TInvestApiProperties.localMock()
+                .withMockScenario(System.getenv("MARKET_PULSE_MOCK_SCENARIO"));
+        this.apiClient = new HttpClientTInvestApiClient(properties);
 
         // Самостоятельная работа (см. «Требования к файловому хранилищу.md»): котировки
         // отслеживаемых инструментов — на диске, а не только в памяти процесса.
