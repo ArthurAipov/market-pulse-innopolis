@@ -17,11 +17,12 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 
+import academy.backend.market_pulse.config.TInvestApiProperties;
 import academy.backend.market_pulse.model.Quote;
 
 /**
  * Контракт, которому должна соответствовать любая реализация {@link TInvestApiClient} — не только
- * опорная {@link HttpClientTInvestApiClient}, но и клиенты на Feign/OkHttp, которые студенты пишут
+ * опорная {@code HttpClientTInvestApiClient}, но и клиенты на Feign/OkHttp, которые студенты пишут
  * на этапе 3 (см. «План семинара.md», семинар 7). Наследники подставляют свою реализацию в
  * {@link #createClient}; сам тест — против изолированного WireMock-сервера, без Docker и без
  * реального мокового сервера с занятия.
@@ -29,7 +30,7 @@ import academy.backend.market_pulse.model.Quote;
  * <p>Если вы реализуете {@code TInvestApiClient} самостоятельно — скопируйте этот файл, замените
  * {@link #createClient} на вызов конструктора своего клиента и запустите тест на себе.
  */
-abstract class TInvestApiClientContractTest {
+public abstract class TInvestApiClientContractTestBase {
 
     @RegisterExtension
     static final WireMockExtension wireMock = WireMockExtension.newInstance()

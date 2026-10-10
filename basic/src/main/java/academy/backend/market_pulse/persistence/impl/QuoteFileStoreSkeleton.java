@@ -1,9 +1,10 @@
-package academy.backend.market_pulse.persistence;
+package academy.backend.market_pulse.persistence.impl;
 
 import java.nio.file.Path;
 import java.util.List;
 
 import academy.backend.market_pulse.model.Quote;
+import academy.backend.market_pulse.persistence.QuoteFileStore;
 
 /**
  * Заготовка для самостоятельной работы на этапе 6 (см. «План семинара.md», семинар 7) — структура

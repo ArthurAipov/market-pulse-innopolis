@@ -61,7 +61,7 @@ try (Response response = client.newCall(request).execute()) {
 
 ## Проверка своей реализации
 
-Скопируйте `src/test/java/academy/backend/market_pulse/client/TInvestApiClientContractTest.java` в
+Скопируйте `src/test/java/academy/backend/market_pulse/client/TInvestApiClientContractTestBase.java` в
 новый класс (например, `MyTInvestApiClientTest`), замените `createClient(...)` на вызов конструктора
 своего класса и запустите тест. Он поднимает изолированный WireMock-сервер — Docker и моковый сервер
 с занятия для этого не нужны.

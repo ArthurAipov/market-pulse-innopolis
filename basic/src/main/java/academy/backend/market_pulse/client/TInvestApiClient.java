@@ -6,9 +6,9 @@ import academy.backend.market_pulse.model.Quote;
 
 /**
  * Клиент к {@code instruments-service} T-Invest API (за моковым сервером на занятии — см. «План
- * семинара.md», семинар 7). Один интерфейс, несколько реализаций ({@link HttpClientTInvestApiClient}
- * — опорная, плюс Feign/OkHttp на выбор студента на этапе 3) — вызывающий код не знает и не должен
- * знать, какая из них используется.
+ * семинара.md», семинар 7). Один интерфейс, несколько реализаций (см. пакет
+ * {@code client.impl} — {@code HttpClientTInvestApiClient} опорная, плюс Feign/OkHttp на выбор
+ * студента на этапе 3) — вызывающий код не знает и не должен знать, какая из них используется.
  */
 public interface TInvestApiClient {
 

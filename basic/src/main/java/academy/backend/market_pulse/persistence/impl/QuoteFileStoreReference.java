@@ -1,4 +1,4 @@
-package academy.backend.market_pulse.persistence;
+package academy.backend.market_pulse.persistence.impl;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+import academy.backend.market_pulse.persistence.QuoteFileStore;
 import academy.backend.market_pulse.factory.InstrumentFactories;
 import academy.backend.market_pulse.model.Currency;
 import academy.backend.market_pulse.model.Instrument;

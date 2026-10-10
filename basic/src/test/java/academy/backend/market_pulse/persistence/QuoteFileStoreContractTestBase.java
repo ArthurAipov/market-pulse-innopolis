@@ -16,11 +16,11 @@ import academy.backend.market_pulse.model.Instrument;
 import academy.backend.market_pulse.model.Quote;
 
 /**
- * Контракт для самостоятельной работы этапа 5 (см. «План семинара.md», семинар 7): что сохранили,
+ * Контракт для самостоятельной работы этапа 6 (см. «План семинара.md», семинар 7): что сохранили,
  * то и прочитали. Чтобы проверить свою реализацию — скопируйте этот файл, замените
  * {@link #createStore} на свой класс (реализующий {@link QuoteFileStore}) и запустите тест.
  */
-abstract class QuoteFileStoreContractTest {
+public abstract class QuoteFileStoreContractTestBase {
 
     protected abstract QuoteFileStore createStore();
 

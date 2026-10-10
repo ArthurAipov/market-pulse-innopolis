@@ -1,4 +1,4 @@
-package academy.backend.market_pulse.client;
+package academy.backend.market_pulse.config;
 
 import java.time.Duration;
 

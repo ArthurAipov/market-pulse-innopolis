@@ -1,4 +1,4 @@
-package academy.backend.market_pulse.client;
+package academy.backend.market_pulse.client.impl;
 
 import java.io.IOException;
 import java.util.List;
@@ -6,6 +6,10 @@ import java.util.concurrent.TimeUnit;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import academy.backend.market_pulse.client.InstrumentQuoteDto;
+import academy.backend.market_pulse.client.TInvestApiClient;
+import academy.backend.market_pulse.client.TInvestApiException;
+import academy.backend.market_pulse.config.TInvestApiProperties;
 import academy.backend.market_pulse.factory.InstrumentFactories;
 import academy.backend.market_pulse.model.Currency;
 import academy.backend.market_pulse.model.Instrument;
