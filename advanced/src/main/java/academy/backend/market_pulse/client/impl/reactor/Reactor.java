@@ -5,6 +5,7 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.CancelledKeyException;
 import java.nio.channels.ClosedChannelException;
+import java.nio.channels.ClosedSelectorException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
@@ -64,26 +65,33 @@ public final class Reactor implements AutoCloseable {
     }
 
     private void runLoop() {
-        while (running) {
-            registerPending();
+        try {
+            while (running) {
+                registerPending();
 
-            try {
-                selector.select();
-            } catch (IOException e) {
-                if (running) {
-                    throw new IllegalStateException("Ошибка в цикле Selector.select()", e);
-                }
-                return;
-            }
-
-            for (SelectionKey key : selector.selectedKeys()) {
                 try {
-                    dispatch(key);
-                } catch (IOException | CancelledKeyException e) {
-                    failAndClose(key, e);
+                    selector.select();
+                } catch (IOException e) {
+                    if (running) {
+                        throw new IllegalStateException("Ошибка в цикле Selector.select()", e);
+                    }
+                    return;
                 }
+
+                for (SelectionKey key : selector.selectedKeys()) {
+                    try {
+                        dispatch(key);
+                    } catch (IOException | CancelledKeyException e) {
+                        failAndClose(key, e);
+                    }
+                }
+                selector.selectedKeys().clear();
             }
-            selector.selectedKeys().clear();
+        } catch (ClosedSelectorException e) {
+            // close() закрывает Selector под работающим циклом — это штатное завершение, не сбой.
+            if (running) {
+                throw e;
+            }
         }
     }
 
