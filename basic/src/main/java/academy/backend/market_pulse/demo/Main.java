@@ -1,6 +1,5 @@
 package academy.backend.market_pulse.demo;
 
-import academy.backend.market_pulse.audit.UserActionLog;
 import academy.backend.market_pulse.cli.*;
 import academy.backend.market_pulse.client.HttpClientTInvestApiClient;
 import academy.backend.market_pulse.client.TInvestApiClient;
@@ -41,11 +40,6 @@ public class Main {
         QuoteSource source = new QuoteSource(sampleQuotes(repository));
         QuoteService quoteService = new QuoteService(source);
 
-        // Пользовательские действия (добавление инструмента, watchlist, обновление котировок,
-        // в будущем — покупка/продажа) — партиционированный по дате лог, независимый от остального
-        // хранилища.
-        UserActionLog actionLog = new UserActionLog(Path.of("logs"));
-
         // Watchlist переживает перезапуск CLI — читается при старте, дописывается на диск сразу
         // при изменении (см. WatchCommand).
         WatchlistStore watchlistStore = new WatchlistStoreReference();
@@ -70,15 +64,15 @@ public class Main {
 
         CommandLine cli = new CommandLine(new MarketPulseCli())
                 .addSubcommand(new SearchCommand(repository))
-                .addSubcommand(new AddCommand(repository, actionLog))
+                .addSubcommand(new AddCommand(repository))
                 .addSubcommand(new ListCommand(repository))
-                .addSubcommand(new WatchCommand(watchlist, watchlistStore, watchlistPath, actionLog))
+                .addSubcommand(new WatchCommand(watchlist, watchlistStore, watchlistPath))
                 .addSubcommand(new QuoteCommand(quoteService))
                 .addSubcommand(new StatsCommand(source))
                 .addSubcommand(new CompareCommand(quoteService))
                 .addSubcommand(new MoversCommand(source))
                 .addSubcommand(new UpdateCommand(apiClient, watchlist, fileBackedQuotes,
-                        historyStore, historyDirectory, actionLog));
+                        historyStore, historyDirectory));
 
         int exitCode = cli.execute(args);
         System.exit(exitCode);

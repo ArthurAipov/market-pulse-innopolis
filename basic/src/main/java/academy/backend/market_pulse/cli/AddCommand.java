@@ -2,8 +2,6 @@ package academy.backend.market_pulse.cli;
 
 import java.util.concurrent.Callable;
 
-import academy.backend.market_pulse.audit.UserAction;
-import academy.backend.market_pulse.audit.UserActionLog;
 import academy.backend.market_pulse.exception.DuplicateTickerException;
 import academy.backend.market_pulse.factory.InstrumentFactories;
 import academy.backend.market_pulse.model.Currency;
@@ -28,11 +26,9 @@ public class AddCommand implements Callable<Integer> {
     private Currency currency;
 
     private final InstrumentRepository repository;
-    private final UserActionLog actionLog;
 
-    public AddCommand(InstrumentRepository repository, UserActionLog actionLog) {
+    public AddCommand(InstrumentRepository repository) {
         this.repository = repository;
-        this.actionLog = actionLog;
     }
 
     @Override
@@ -40,7 +36,6 @@ public class AddCommand implements Callable<Integer> {
         try {
             Instrument instrument = InstrumentFactories.create(type, ticker, name, currency);
             repository.add(instrument);
-            actionLog.record(UserAction.INSTRUMENT_ADDED, instrument.getTicker());
             System.out.println("Добавлено: " + instrument.getDescription());
             return 0;
         } catch (DuplicateTickerException | IllegalArgumentException e) {

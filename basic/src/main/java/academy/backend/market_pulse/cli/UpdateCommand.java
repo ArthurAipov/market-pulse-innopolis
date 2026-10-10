@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
-import academy.backend.market_pulse.audit.UserAction;
-import academy.backend.market_pulse.audit.UserActionLog;
 import academy.backend.market_pulse.client.TInvestApiClient;
 import academy.backend.market_pulse.client.TInvestApiException;
 import academy.backend.market_pulse.history.PriceHistoryStore;
@@ -32,16 +30,14 @@ public class UpdateCommand implements Callable<Integer> {
     private final FileBackedQuoteRepository repository;
     private final PriceHistoryStore historyStore;
     private final Path historyDirectory;
-    private final UserActionLog actionLog;
 
     public UpdateCommand(TInvestApiClient client, Watchlist watchlist, FileBackedQuoteRepository repository,
-            PriceHistoryStore historyStore, Path historyDirectory, UserActionLog actionLog) {
+            PriceHistoryStore historyStore, Path historyDirectory) {
         this.client = client;
         this.watchlist = watchlist;
         this.repository = repository;
         this.historyStore = historyStore;
         this.historyDirectory = historyDirectory;
-        this.actionLog = actionLog;
     }
 
     @Override
@@ -71,7 +67,6 @@ public class UpdateCommand implements Callable<Integer> {
             historyStore.append(historyDirectory,
                     new PricePoint(quote.getInstrument().getTicker(), now, quote.getPrice()));
         }
-        actionLog.record(UserAction.QUOTES_UPDATED, "count=" + trackedQuotes.size());
 
         System.out.println("Обновлено котировок: " + trackedQuotes.size() + " -> " + repository.getPath());
         return 0;
