@@ -20,6 +20,13 @@ curl -H "X-Mock-Scenario: error" http://localhost:1080/v1/instruments
 curl -H "X-Mock-Scenario: timeout" http://localhost:1080/v1/instruments   # отвечает с задержкой 10с
 ```
 
+Из Java-клиента сценарий включается переменной окружения `MARKET_PULSE_MOCK_SCENARIO`
+(`error` | `timeout` | `ok`) — клиент отправляет её заголовком `X-Mock-Scenario`:
+
+```
+MARKET_PULSE_MOCK_SCENARIO=error java -cp ... academy.backend.market_pulse.demo.Main update
+```
+
 ## Остановка
 
 ```bash

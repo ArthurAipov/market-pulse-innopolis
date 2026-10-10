@@ -1,7 +1,9 @@
 package academy.backend.market_pulse.client;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.okJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
@@ -78,5 +80,25 @@ public abstract class TInvestApiClientContractTestBase {
         List<Quote> quotes = createClient(propertiesForMock()).fetchQuotes();
 
         assertEquals(0, quotes.size());
+    }
+
+    @Test
+    void fetchQuotes_sendsMockScenarioHeaderWhenConfigured() {
+        wireMock.stubFor(get(urlEqualTo("/v1/instruments")).willReturn(okJson("[]")));
+
+        createClient(propertiesForMock().withMockScenario("error")).fetchQuotes();
+
+        wireMock.verify(getRequestedFor(urlEqualTo("/v1/instruments"))
+                .withHeader(TInvestApiProperties.MOCK_SCENARIO_HEADER, equalTo("error")));
+    }
+
+    @Test
+    void fetchQuotes_omitsMockScenarioHeaderByDefault() {
+        wireMock.stubFor(get(urlEqualTo("/v1/instruments")).willReturn(okJson("[]")));
+
+        createClient(propertiesForMock()).fetchQuotes();
+
+        wireMock.verify(getRequestedFor(urlEqualTo("/v1/instruments"))
+                .withoutHeader(TInvestApiProperties.MOCK_SCENARIO_HEADER));
     }
 }

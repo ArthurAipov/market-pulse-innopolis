@@ -42,6 +42,11 @@ public class FeignTInvestApiClientReference implements TInvestApiClient {
                         properties.getConnectTimeout().toMillis(), TimeUnit.MILLISECONDS,
                         properties.getRequestTimeout().toMillis(), TimeUnit.MILLISECONDS,
                         true))
+                .requestInterceptor(template -> {
+                    if (properties.getMockScenario() != null) {
+                        template.header(TInvestApiProperties.MOCK_SCENARIO_HEADER, properties.getMockScenario());
+                    }
+                })
                 .target(InstrumentsServiceApi.class, properties.getBaseUrl());
     }
 

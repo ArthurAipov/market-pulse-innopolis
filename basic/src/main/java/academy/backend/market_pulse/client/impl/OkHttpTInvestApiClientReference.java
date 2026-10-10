@@ -42,11 +42,14 @@ public class OkHttpTInvestApiClientReference implements TInvestApiClient {
 
     @Override
     public List<Quote> fetchQuotes() {
-        Request request = new Request.Builder()
+        Request.Builder requestBuilder = new Request.Builder()
                 .url(properties.getBaseUrl() + "/v1/instruments")
                 .header("Accept", "application/json")
-                .get()
-                .build();
+                .get();
+        if (properties.getMockScenario() != null) {
+            requestBuilder.header(TInvestApiProperties.MOCK_SCENARIO_HEADER, properties.getMockScenario());
+        }
+        Request request = requestBuilder.build();
 
         try (Response response = httpClient.newCall(request).execute()) {
             if (!response.isSuccessful()) {

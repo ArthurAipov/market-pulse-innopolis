@@ -44,12 +44,15 @@ public class HttpClientTInvestApiClient implements TInvestApiClient {
 
     @Override
     public List<Quote> fetchQuotes() {
-        HttpRequest request = HttpRequest.newBuilder()
+        HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
                 .uri(URI.create(properties.getBaseUrl() + "/v1/instruments"))
                 .timeout(properties.getRequestTimeout())
                 .header("Accept", "application/json")
-                .GET()
-                .build();
+                .GET();
+        if (properties.getMockScenario() != null) {
+            requestBuilder.header(TInvestApiProperties.MOCK_SCENARIO_HEADER, properties.getMockScenario());
+        }
+        HttpRequest request = requestBuilder.build();
 
         LOGGER.log(Level.INFO, "-> {0} {1}", request.method(), request.uri());
 
