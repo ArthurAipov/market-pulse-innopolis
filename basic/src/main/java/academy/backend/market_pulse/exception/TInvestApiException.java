@@ -1,4 +1,4 @@
-package academy.backend.market_pulse.client;
+package academy.backend.market_pulse.exception;
 
 /**
  * Сбой при обращении к T-Invest API (сетевая ошибка, неожиданный статус ответа, битый JSON) —

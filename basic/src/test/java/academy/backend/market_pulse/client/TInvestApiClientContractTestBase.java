@@ -18,6 +18,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 
 import academy.backend.market_pulse.config.TInvestApiProperties;
+import academy.backend.market_pulse.exception.TInvestApiException;
 import academy.backend.market_pulse.model.Quote;
 
 /**

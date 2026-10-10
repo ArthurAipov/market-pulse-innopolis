@@ -1,7 +1,7 @@
-package academy.backend.market_pulse.persistence.impl;
+package academy.backend.market_pulse.repository.store.impl;
 
-import academy.backend.market_pulse.persistence.QuoteFileStore;
-import academy.backend.market_pulse.persistence.QuoteFileStoreContractTestBase;
+import academy.backend.market_pulse.repository.store.QuoteFileStore;
+import academy.backend.market_pulse.repository.store.QuoteFileStoreContractTestBase;
 
 /**
  * Прогон общего контракта ({@link QuoteFileStoreContractTestBase}) на эталонной реализации —

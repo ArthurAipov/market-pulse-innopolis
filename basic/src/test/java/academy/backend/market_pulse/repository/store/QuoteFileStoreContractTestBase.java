@@ -1,4 +1,4 @@
-package academy.backend.market_pulse.persistence;
+package academy.backend.market_pulse.repository.store;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

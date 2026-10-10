@@ -1,16 +1,16 @@
-package academy.backend.market_pulse.persistence.impl;
+package academy.backend.market_pulse.repository.store.impl;
 
 import java.nio.file.Path;
 import java.util.List;
 
 import academy.backend.market_pulse.model.Quote;
-import academy.backend.market_pulse.persistence.QuoteFileStore;
+import academy.backend.market_pulse.repository.store.QuoteFileStore;
 
 /**
  * Заготовка для самостоятельной работы на этапе 6 (см. «План семинара.md», семинар 7) — структура
  * есть, решения нет. Формат файла — на ваш выбор (JSON, CSV, построчный текст); главное, чтобы
  * {@code load(save(quotes))} возвращал те же котировки. Проверьте себя тестом
- * {@code QuoteFileStoreContractTest} (замените в нём эталонную реализацию на свою).
+ * {@code QuoteFileStoreContractTestBase} (замените в нём эталонную реализацию на свою).
  */
 public class QuoteFileStoreSkeleton implements QuoteFileStore {
 

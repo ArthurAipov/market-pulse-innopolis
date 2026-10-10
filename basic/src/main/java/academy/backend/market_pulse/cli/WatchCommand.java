@@ -1,7 +1,7 @@
 package academy.backend.market_pulse.cli;
 
 import academy.backend.market_pulse.model.Watchlist;
-import academy.backend.market_pulse.persistence.WatchlistStore;
+import academy.backend.market_pulse.repository.store.WatchlistStore;
 import lombok.RequiredArgsConstructor;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Parameters;

@@ -7,12 +7,12 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 
 import academy.backend.market_pulse.client.TInvestApiClient;
-import academy.backend.market_pulse.client.TInvestApiException;
+import academy.backend.market_pulse.exception.TInvestApiException;
 import academy.backend.market_pulse.history.PriceHistoryStore;
 import academy.backend.market_pulse.history.PricePoint;
 import academy.backend.market_pulse.model.Quote;
 import academy.backend.market_pulse.model.Watchlist;
-import academy.backend.market_pulse.persistence.FileBackedQuoteRepository;
+import academy.backend.market_pulse.repository.FileBackedQuoteRepository;
 import lombok.RequiredArgsConstructor;
 import picocli.CommandLine.Command;
 

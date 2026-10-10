@@ -1,9 +1,10 @@
-package academy.backend.market_pulse.persistence;
+package academy.backend.market_pulse.repository;
 
 import java.nio.file.Path;
 import java.util.List;
 
 import academy.backend.market_pulse.model.Quote;
+import academy.backend.market_pulse.repository.store.QuoteFileStore;
 
 /**
  * Кеширующий доступ к котировкам, сохранённым на диске (см. «План семинара.md», семинар 7,

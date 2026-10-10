@@ -1,4 +1,4 @@
-package academy.backend.market_pulse.persistence;
+package academy.backend.market_pulse.repository;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;

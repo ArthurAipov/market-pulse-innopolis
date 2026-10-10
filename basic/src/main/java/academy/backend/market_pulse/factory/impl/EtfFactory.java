@@ -1,5 +1,7 @@
-package academy.backend.market_pulse.factory;
+package academy.backend.market_pulse.factory.impl;
 
+import academy.backend.market_pulse.factory.InstrumentFactories;
+import academy.backend.market_pulse.factory.InstrumentFactory;
 import academy.backend.market_pulse.model.Currency;
 import academy.backend.market_pulse.model.Etf;
 import academy.backend.market_pulse.model.Instrument;

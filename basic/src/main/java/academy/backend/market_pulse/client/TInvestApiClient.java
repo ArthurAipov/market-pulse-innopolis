@@ -2,6 +2,7 @@ package academy.backend.market_pulse.client;
 
 import java.util.List;
 
+import academy.backend.market_pulse.exception.TInvestApiException;
 import academy.backend.market_pulse.model.Quote;
 
 /**

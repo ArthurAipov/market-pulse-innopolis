@@ -1,4 +1,4 @@
-package academy.backend.market_pulse.persistence;
+package academy.backend.market_pulse.repository.store;
 
 import java.nio.file.Path;
 import java.util.List;
