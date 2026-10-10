@@ -23,9 +23,9 @@ import org.openjdk.jmh.annotations.TearDown;
 import org.openjdk.jmh.annotations.Warmup;
 import org.openjdk.jmh.infra.Blackhole;
 
-import academy.backend.market_pulse.client.HttpClientTInvestApiClient;
-import academy.backend.market_pulse.client.TInvestApiProperties;
-import academy.backend.market_pulse.client.reactor.ReactorTInvestApiClient;
+import academy.backend.market_pulse.client.impl.HttpClientTInvestApiClient;
+import academy.backend.market_pulse.client.impl.reactor.ReactorTInvestApiClient;
+import academy.backend.market_pulse.config.TInvestApiProperties;
 
 /**
  * Живой замер этапа 7 (см. «План семинара.md», семинар 7): пропускная способность блокирующего

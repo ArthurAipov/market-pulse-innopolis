@@ -1,8 +1,8 @@
 package academy.backend.market_pulse.demo;
 
-import academy.backend.market_pulse.client.HttpClientTInvestApiClient;
 import academy.backend.market_pulse.client.TInvestApiClient;
-import academy.backend.market_pulse.client.TInvestApiProperties;
+import academy.backend.market_pulse.client.impl.HttpClientTInvestApiClient;
+import academy.backend.market_pulse.config.TInvestApiProperties;
 import academy.backend.market_pulse.model.Quote;
 
 /**

@@ -7,9 +7,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import academy.backend.market_pulse.client.HttpClientTInvestApiClient;
 import academy.backend.market_pulse.client.TInvestApiClient;
-import academy.backend.market_pulse.client.TInvestApiProperties;
+import academy.backend.market_pulse.client.impl.HttpClientTInvestApiClient;
+import academy.backend.market_pulse.config.TInvestApiProperties;
 
 /**
  * Демо «от обратного» для этапа 3 (см. «План семинара.md», семинар 7): показывает проблему, которую

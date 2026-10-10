@@ -2,17 +2,17 @@ package academy.backend.market_pulse.cli;
 
 import java.util.concurrent.Callable;
 
-import academy.backend.market_pulse.audit.UserAction;
-import academy.backend.market_pulse.audit.UserActionLog;
 import academy.backend.market_pulse.exception.DuplicateTickerException;
 import academy.backend.market_pulse.factory.InstrumentFactories;
 import academy.backend.market_pulse.model.Currency;
 import academy.backend.market_pulse.model.Instrument;
 import academy.backend.market_pulse.repository.InstrumentRepository;
+import lombok.RequiredArgsConstructor;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Parameters;
 
 @Command(name = "add", description = "Добавление инструмента в репозиторий")
+@RequiredArgsConstructor
 public class AddCommand implements Callable<Integer> {
 
     @Parameters(index = "0", description = "Тип инструмента (STOCK, BOND, ETF)")
@@ -28,19 +28,12 @@ public class AddCommand implements Callable<Integer> {
     private Currency currency;
 
     private final InstrumentRepository repository;
-    private final UserActionLog actionLog;
-
-    public AddCommand(InstrumentRepository repository, UserActionLog actionLog) {
-        this.repository = repository;
-        this.actionLog = actionLog;
-    }
 
     @Override
     public Integer call() {
         try {
             Instrument instrument = InstrumentFactories.create(type, ticker, name, currency);
             repository.add(instrument);
-            actionLog.record(UserAction.INSTRUMENT_ADDED, instrument.getTicker());
             System.out.println("Добавлено: " + instrument.getDescription());
             return 0;
         } catch (DuplicateTickerException | IllegalArgumentException e) {
