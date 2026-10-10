@@ -1,6 +1,9 @@
 target/
 *.class
 
+# Runtime-состояние CLI (семинар 7) — котировки на диске, не часть исходников
+data/
+
 # IDE
 .idea/
 *.iml
