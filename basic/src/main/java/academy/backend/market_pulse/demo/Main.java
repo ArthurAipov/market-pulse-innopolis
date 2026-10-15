@@ -1,11 +1,6 @@
 package academy.backend.market_pulse.demo;
 
-import academy.backend.market_pulse.cli.AddCommand;
-import academy.backend.market_pulse.cli.ListCommand;
-import academy.backend.market_pulse.cli.MarketPulseCli;
-import academy.backend.market_pulse.cli.QuoteCommand;
-import academy.backend.market_pulse.cli.SearchCommand;
-import academy.backend.market_pulse.cli.WatchCommand;
+import academy.backend.market_pulse.cli.*;
 import academy.backend.market_pulse.factory.InstrumentFactories;
 import academy.backend.market_pulse.model.Currency;
 import academy.backend.market_pulse.model.Instrument;
@@ -17,6 +12,7 @@ import academy.backend.market_pulse.service.QuoteSource;
 import picocli.CommandLine;
 
 import java.math.BigDecimal;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -30,27 +26,48 @@ public class Main {
     public static void main(String[] args) {
         InstrumentRepository repository = new InstrumentRepository();
         Watchlist watchlist = new Watchlist();
-        QuoteService quoteService = new QuoteService(new QuoteSource(sampleQuotes()));
+        QuoteSource source = new QuoteSource(sampleQuotes(repository));
+        QuoteService quoteService = new QuoteService(source);
 
         CommandLine cli = new CommandLine(new MarketPulseCli())
                 .addSubcommand(new SearchCommand(repository))
                 .addSubcommand(new AddCommand(repository))
                 .addSubcommand(new ListCommand(repository))
                 .addSubcommand(new WatchCommand(watchlist))
-                .addSubcommand(new QuoteCommand(quoteService));
+                .addSubcommand(new QuoteCommand(quoteService))
+                .addSubcommand(new StatsCommand(source))
+                .addSubcommand(new CompareCommand(quoteService))
+                .addSubcommand(new MoversCommand(source));
+
         int exitCode = cli.execute(args);
         System.exit(exitCode);
     }
 
     /**
-     * Заглушка внешнего источника котировок — заранее заготовленные данные вместо реального
-     * сетевого запроса (реальный источник появится на семинаре 7).
+     * Заглушка каталога и котировок: репозиторий уже содержит базовый набор (засеян в конструкторе
+     * {@code InMemoryInstrumentRepository}), здесь добавляются остальные инструменты и по каждому
+     * строится котировка. Возвращает котировки для {@link QuoteSource}. Реальный сетевой источник
+     * придёт на смену на семинаре 7.
      */
-    private static Map<String, Quote> sampleQuotes() {
-        Instrument sber = InstrumentFactories.create("STOCK", "SBER", "Сбербанк", Currency.RUB);
+    private static Map<String, Quote> sampleQuotes(InstrumentRepository repository) {
+        Instrument sber = repository.findByTicker("SBER").orElseThrow();
+        Instrument ofz = repository.findByTicker("OFZ26233").orElseThrow();
+        Instrument fxus = repository.findByTicker("FXUS").orElseThrow();
+
         Instrument gazp = InstrumentFactories.create("STOCK", "GAZP", "Газпром", Currency.RUB);
-        return Map.of(
-                "SBER", new Quote(sber, new BigDecimal("250.00"), new BigDecimal("1.20")),
-                "GAZP", new Quote(gazp, new BigDecimal("120.50"), new BigDecimal("-0.80")));
+        Instrument lkoh = InstrumentFactories.create("STOCK", "LKOH", "Лукойл", Currency.RUB);
+        Instrument aapl = InstrumentFactories.create("STOCK", "AAPL", "Apple", Currency.USD);
+        repository.add(gazp);
+        repository.add(lkoh);
+        repository.add(aapl);
+
+        Map<String, Quote> quotes = new LinkedHashMap<>();
+        quotes.put("SBER", new Quote(sber, new BigDecimal("250.00"), new BigDecimal("1.20")));
+        quotes.put("GAZP", new Quote(gazp, new BigDecimal("120.50"), new BigDecimal("-0.80")));
+        quotes.put("LKOH", new Quote(lkoh, new BigDecimal("7100.00"), new BigDecimal("2.30")));
+        quotes.put("AAPL", new Quote(aapl, new BigDecimal("225.30"), new BigDecimal("0.50")));
+        quotes.put("OFZ26233", new Quote(ofz, new BigDecimal("780.00"), new BigDecimal("-0.15")));
+        quotes.put("FXUS", new Quote(fxus, new BigDecimal("6.85"), new BigDecimal("0.90")));
+        return quotes;
     }
 }
