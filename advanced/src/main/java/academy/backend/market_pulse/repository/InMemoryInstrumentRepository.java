@@ -2,11 +2,11 @@ package academy.backend.market_pulse.repository;
 
 import academy.backend.market_pulse.exception.DuplicateTickerException;
 import academy.backend.market_pulse.model.*;
+import academy.backend.market_pulse.model.Currency;
 
 import java.math.BigDecimal;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * Реализация {@link InstrumentRepository} поверх внутреннего массива фиксированного размера.
@@ -14,8 +14,7 @@ import java.util.Optional;
  */
 public class InMemoryInstrumentRepository implements InstrumentRepository {
 
-    private final Instrument[] instruments = new Instrument[100];
-    private int size = 0;
+    private final Map<String, Instrument> instruments = new HashMap<>();
 
     public InMemoryInstrumentRepository() {
         // Стартовые данные для демонстрации CLI: без них каждый запуск начинается с пустого списка.
@@ -26,11 +25,12 @@ public class InMemoryInstrumentRepository implements InstrumentRepository {
 
     @Override
     public void add(Instrument instrument) {
-        if (findByTicker(instrument.getTicker()).isPresent()) {
+        if (instruments.containsKey(instrument.getTicker())) {
             throw new DuplicateTickerException(instrument.getTicker());
         }
-        instruments[size++] = instrument;
+        instruments.put(instrument.getTicker(), instrument);
     }
+
     @Override
     public Optional<Instrument> findByTicker(String ticker) {
         for (Instrument instrument : this) {
@@ -43,21 +43,11 @@ public class InMemoryInstrumentRepository implements InstrumentRepository {
 
     @Override
     public Iterator<Instrument> iterator() {
-        return new Iterator<>() {
-            private int cursor = 0;
+        return instruments.values().iterator();
+    }
 
-            @Override
-            public boolean hasNext() {
-                return cursor < size;
-            }
-
-            @Override
-            public Instrument next() {
-                if (!hasNext()) {
-                    throw new NoSuchElementException();
-                }
-                return instruments[cursor++];
-            }
-        };
+    @Override
+    public Stream<Instrument> stream() {
+        return instruments.values().stream();
     }
 }

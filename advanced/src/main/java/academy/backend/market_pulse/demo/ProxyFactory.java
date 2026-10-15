@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Iterator;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import academy.backend.market_pulse.model.Instrument;
 import academy.backend.market_pulse.repository.InMemoryInstrumentRepository;
@@ -89,6 +90,14 @@ public final class ProxyFactory {
             long start = System.nanoTime();
             Iterator<Instrument> result = target.iterator();
             System.out.printf("iterator() выполнен за %d нс%n", System.nanoTime() - start);
+            return result;
+        }
+
+        @Override
+        public Stream<Instrument> stream() {
+            long start = System.nanoTime();
+            Stream<Instrument> result = target.stream();
+            System.out.printf("stream() выполнен за %d нс%n", System.nanoTime() - start);
             return result;
         }
     }
