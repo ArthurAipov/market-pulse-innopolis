@@ -76,7 +76,11 @@ public class GathererDemo {
                     }
                     state.max = state.max.max(value);
                     // Вызываем downstream на результате
-                    return downstream.push(state.max);  // Возвращаем boolean
+                    if (state.window.size() == k) {
+                        return downstream.push(state.max);  // Возвращаем boolean
+                    } else {
+                        return true;
+                    }
                 });
     }
 

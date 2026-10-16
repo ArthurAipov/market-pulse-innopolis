@@ -45,7 +45,6 @@ public class ListCommand implements Callable<Integer> {
         // (тот же отбор и вывод) не меняется.
         repository.stream()
                 .filter(filter::matches)
-                .collect(Collectors.toList())
                 .forEach(System.out::println);
         return 0;
     }
