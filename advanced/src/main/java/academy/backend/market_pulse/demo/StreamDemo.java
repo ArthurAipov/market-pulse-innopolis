@@ -7,9 +7,11 @@ import academy.backend.market_pulse.model.Instrument;
 import academy.backend.market_pulse.model.Stock;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("JavaPrintToLogpoint")
 public class StreamDemo {
@@ -50,66 +52,110 @@ public class StreamDemo {
 
     /** Задание 1. Вернуть топ-3 облигации по купону, но только с купоном больше 8%. */
     private static List<Bond> topCouponBonds(List<Instrument> instruments) {
-        // TODO: отфильтруй облигации (instanceof Bond), оставь купон > 8,
-        //       отсортируй по купону по убыванию и возьми первые 3.
-        return List.of();
+        return instruments.stream()
+                .filter(i -> i instanceof Bond)
+                .map(i -> (Bond) i)
+                .filter(b -> b.getCouponRate().compareTo(new BigDecimal("8")) > 0)
+                .sorted((b1, b2) -> b2.getCouponRate().compareTo(b1.getCouponRate()))
+                .limit(3)
+                .collect(Collectors.toList());
     }
 
     /** Задание 2. Вернуть тикеры акций финансового сектора в алфавитном порядке. */
     private static List<String> financialStockTickers(List<Instrument> instruments) {
-        // TODO: отфильтруй акции (instanceof Stock), оставь сектор «Финансы»,
-        //       возьми тикеры и отсортируй по алфавиту.
-        return List.of();
+        return instruments.stream()
+                .filter(i -> i instanceof Stock)
+                .map(i -> (Stock) i)
+                .filter(s -> "Финансы".equals(s.getSector()))
+                .map(s -> s.getTicker())
+                .sorted()
+                .collect(Collectors.toList());
     }
 
     /** Задание 3. Вернуть карту «сектор → сколько акций в нём». */
     private static Map<String, Long> stocksBySector(List<Instrument> instruments) {
-        // TODO: отфильтруй акции (instanceof Stock) и сгруппируй по сектору с подсчётом.
-        return Map.of();
+        return instruments.stream()
+                .filter(i -> i instanceof Stock)
+                .map(i -> (Stock) i)
+                .collect(Collectors.groupingBy(s -> s.getSector(), Collectors.counting()));
     }
 
     /** Задание 4. Вернуть средний купон по всем облигациям (0, если облигаций нет). */
     private static double averageCoupon(List<Instrument> instruments) {
-        // TODO: отфильтруй облигации (instanceof Bond) и посчитай средний купон.
-        return 0.0;
+        return instruments.stream()
+                .filter(i -> i instanceof Bond)
+                .map(i -> (Bond) i)
+                .mapToDouble(b -> b.getCouponRate().doubleValue())
+                .average()
+                .orElse(0.0);
     }
 
     /** Задание 5. Вернуть акцию с максимальной дивидендной доходностью (пусто, если нет акций). */
     private static Optional<Stock> bestDividendStock(List<Instrument> instruments) {
-        // TODO: отфильтруй акции (instanceof Stock) и возьми максимум по доходности.
-        return Optional.empty();
+        return instruments.stream()
+                .filter(i -> i instanceof Stock)
+                .map(i -> (Stock) i)
+                .max((s1, s2) -> s1.getDividendYield().compareTo(s2.getDividendYield()));
     }
 
     /** Задание 6. Вернуть список всех валют, в которых есть инструменты, без повторов. */
     private static List<Currency> currencies(List<Instrument> instruments) {
-        // TODO: возьми валюту каждого инструмента и убери повторы.
-        return List.of();
+        return instruments.stream()
+                .map(i -> i.getCurrency())
+                .distinct()
+                .collect(Collectors.toList());
     }
 
     /** Задание 7. Вернуть тикеры всех ETF одной строкой через запятую. */
     private static String etfTickers(List<Instrument> instruments) {
-        // TODO: отфильтруй ETF (instanceof Etf), возьми тикеры и соедини через «, ».
-        return null;
+        return instruments.stream()
+                .filter(i -> i instanceof Etf)
+                .map(i -> i.getTicker())
+                .collect(Collectors.joining(", "));
     }
 
     /** Задание 8. Вернуть карту «тип → топ-3 тикера по алфавиту в группе». */
     private static Map<String, List<String>> top3ByTickerInGroup(List<Instrument> instruments) {
-        // TODO: сгруппируй по типу, затем в каждой группе заново открой стрим,
-        //       возьми тикеры, отсортируй и оставь первые 3.
-        return Map.of();
+        Map<String, List<Instrument>> groups = instruments.stream()
+                .collect(Collectors.groupingBy(i -> i.getType()));
+        Map<String, List<String>> result = new HashMap<>();
+
+        // Каждую группу обрабатываем отдельно.
+        for (String type : groups.keySet()) {
+            List<String> tickers = groups.get(type).stream()
+                    .map(i -> i.getTicker())
+                    .sorted()
+                    .limit(3)
+                    .collect(Collectors.toList());
+            result.put(type, tickers);
+        }
+        return result;
     }
 
     /** Задание 9. Вернуть облигацию с самым ранним погашением (пусто, если нет облигаций). */
     private static Optional<Bond> earliestMaturityBond(List<Instrument> instruments) {
-        // TODO: отфильтруй облигации (instanceof Bond) и возьми минимум по году погашения.
-        return Optional.empty();
+        return instruments.stream()
+                .filter(i -> i instanceof Bond)
+                .map(i -> (Bond) i)
+                .min((b1, b2) -> Integer.compare(b1.getMaturityYear(), b2.getMaturityYear()));
     }
 
     /** Задание 10. Вернуть карту «сектор → лучшая по дивидендам акция в секторе». */
     private static Map<String, Stock> bestDividendPerSector(List<Instrument> instruments) {
-        // TODO: сгруппируй акции (instanceof Stock) по сектору, затем в каждой группе
-        //       заново открой стрим и возьми максимум по дивидендной доходности.
-        return Map.of();
+        Map<String, List<Stock>> groups = instruments.stream()
+                .filter(i -> i instanceof Stock)
+                .map(i -> (Stock) i)
+                .collect(Collectors.groupingBy(s -> s.getSector()));
+        Map<String, Stock> result = new HashMap<>();
+
+        for (String sector : groups.keySet()) {
+            Optional<Stock> best = groups.get(sector).stream()
+                    .max((s1, s2) -> s1.getDividendYield().compareTo(s2.getDividendYield()));
+            if (best.isPresent()) {
+                result.put(sector, best.get());
+            }
+        }
+        return result;
     }
 
     /**
