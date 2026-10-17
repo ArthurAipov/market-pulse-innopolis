@@ -1,5 +1,8 @@
 package academy.backend.market_pulse.factory;
 
+import academy.backend.market_pulse.factory.impl.BondFactory;
+import academy.backend.market_pulse.factory.impl.EtfFactory;
+import academy.backend.market_pulse.factory.impl.StockFactory;
 import academy.backend.market_pulse.model.Currency;
 import academy.backend.market_pulse.model.Instrument;
 import academy.backend.market_pulse.util.Registry;

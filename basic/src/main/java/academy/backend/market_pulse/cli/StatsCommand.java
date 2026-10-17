@@ -3,6 +3,7 @@ package academy.backend.market_pulse.cli;
 import academy.backend.market_pulse.model.Currency;
 import academy.backend.market_pulse.model.Quote;
 import academy.backend.market_pulse.service.QuoteSource;
+import lombok.RequiredArgsConstructor;
 import picocli.CommandLine.Command;
 
 import java.math.BigDecimal;
@@ -17,13 +18,10 @@ import java.util.stream.Collectors;
  * агрегаты — отдельные конвейеры над одним источником.
  */
 @Command(name = "stats", description = "Сводка по котировкам: распределение по типу и валюте, средняя доходность")
+@RequiredArgsConstructor
 public class StatsCommand implements Callable<Integer> {
 
     private final QuoteSource source;
-
-    public StatsCommand(QuoteSource source) {
-        this.source = source;
-    }
 
     @Override
     public Integer call() {
