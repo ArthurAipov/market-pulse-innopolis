@@ -10,10 +10,9 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 
 /**
- * Демо сравнения для «MappedByteBuffer vs Files» (см. «План семинара.md», семинар 7, вне тайминга
- * занятия): {@code Files.readAllBytes} копирует весь файл в один {@code byte[]} в куче;
+ * Демо сравнения для «MappedByteBuffer vs Files» (см. «План семинара.md», семинар 7, этап 9): {@code Files.readAllBytes} копирует весь файл в один {@code byte[]} в куче;
  * {@code FileChannel.map} отображает файл в память процесса — обслуживается страничным кешем ОС, а
- * не кучей JVM. Точный замер аллокаций — {@code ClientThroughputBenchmark}... см.
+ * не кучей JVM. Точный замер аллокаций — в
  * {@code benchmark.MappedFileReadingBenchmark} (JMH, {@code -prof gc}). Здесь — только
  * качественная демонстрация, что оба способа читают один и тот же файл и дают один и тот же
  * результат.

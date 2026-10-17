@@ -17,9 +17,9 @@ import academy.backend.market_pulse.exception.TInvestApiException;
 import academy.backend.market_pulse.model.Quote;
 
 /**
- * Опорная реализация {@link TInvestApiClient} — пишется семинаристом на этапе 2 (см. «План
- * семинара.md», семинар 7). Синхронный {@link HttpClient#send} намеренно: он же на этапе 3
- * демонстрирует проблему, которую решает Reactor — поток вызывающего кода блокируется на всё время
+ * Опорная реализация {@link TInvestApiClient} — показывается на этапе 2 (см. «План
+ * семинара.md», семинар 7). Синхронный {@link HttpClient#send} намеренно: он же на этапах 2–3
+ * демонстрирует проблему, которую решает Reactor, — поток вызывающего кода блокируется на всё время
  * ожидания ответа. {@link HttpClient} создаётся один раз в конструкторе и переиспользуется.
  */
 public class HttpClientTInvestApiClient implements TInvestApiClient {

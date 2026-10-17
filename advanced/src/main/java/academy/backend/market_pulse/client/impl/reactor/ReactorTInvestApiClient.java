@@ -17,10 +17,10 @@ import academy.backend.market_pulse.model.Quote;
 /**
  * Реакторная реализация {@link TInvestApiClient} — та же задача, что у
  * {@code HttpClientTInvestApiClient}, но без потока, блокирующегося на ожидании ответа (см. «План
- * семинара.md», семинар 7, этап 6). {@link #fetchQuotes()} удобства ради синхронный (чтобы
- * реализовывать общий интерфейс и сравниваться в показе этапа 2 на равных), но под капотом —
+ * семинара.md», семинар 7, этап 7). {@link #fetchQuotes()} удобства ради синхронный (чтобы
+ * реализовывать общий интерфейс и сравниваться с блокирующим на равных), но под капотом —
  * {@link #fetchQuotesAsync()}: вся выгода реактора проявляется именно там, когда вызывается
- * конкурентно много раз на одном {@link Reactor} (см. {@code ClientThroughputBenchmark}).
+ * конкурентно много раз на одном {@link Reactor} (см. {@code ClientThroughputDemo}).
  */
 public class ReactorTInvestApiClient implements TInvestApiClient, AutoCloseable {
 
