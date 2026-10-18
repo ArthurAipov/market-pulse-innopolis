@@ -7,10 +7,10 @@ import academy.backend.market_pulse.model.Quote;
 
 /**
  * Клиент к {@code instruments-service} T-Invest API (за моковым сервером на занятии — см. «План
- * семинара.md», семинар 7). Один интерфейс, две реализации (см. пакет {@code client.impl}):
- * {@code HttpClientTInvestApiClient} (блокирующая, опорная — этап 2) и реакторная
- * ({@code ReactorTInvestApiClient}, этап 7) — вызывающий код не знает и не должен знать, какая из
- * них используется под {@link TInvestClientMode}.
+ * семинара.md», семинар 7). Один интерфейс, три реализации (см. пакет {@code client.impl}):
+ * блокирующая на {@code HttpURLConnection} (опорная — этап 2), реакторная на {@code Selector}
+ * ({@code ReactorTInvestApiClient}, этап 7) и готовая на {@code HttpClient} (этап 8) — вызывающий
+ * код не знает и не должен знать, какая из них используется под {@link TInvestClientMode}.
  */
 public interface TInvestApiClient {
 

@@ -1,7 +1,7 @@
 package academy.backend.market_pulse.demo;
 
 import academy.backend.market_pulse.client.TInvestApiClient;
-import academy.backend.market_pulse.client.impl.HttpClientTInvestApiClient;
+import academy.backend.market_pulse.client.impl.HttpUrlConnectionTInvestApiClient;
 import academy.backend.market_pulse.config.TInvestApiProperties;
 import academy.backend.market_pulse.model.Quote;
 
@@ -13,7 +13,7 @@ import academy.backend.market_pulse.model.Quote;
 public class TInvestApiClientDemo {
 
     public static void main(String[] args) {
-        TInvestApiClient client = new HttpClientTInvestApiClient(TInvestApiProperties.localMock());
+        TInvestApiClient client = new HttpUrlConnectionTInvestApiClient(TInvestApiProperties.localMock());
 
         System.out.println("Запрос к instruments-service (http://localhost:1080/v1/instruments)...");
         for (Quote quote : client.fetchQuotes()) {
