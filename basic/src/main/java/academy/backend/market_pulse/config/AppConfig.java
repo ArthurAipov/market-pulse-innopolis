@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import academy.backend.market_pulse.client.impl.OkHttpTInvestApiClientReference;
 import lombok.Getter;
 
 import academy.backend.market_pulse.client.TInvestApiClient;
@@ -69,7 +70,7 @@ public class AppConfig {
         // стороне мокового сервера: MARKET_PULSE_MOCK_SCENARIO=error java ... update
         TInvestApiProperties properties = TInvestApiProperties.localMock()
                 .withMockScenario(System.getenv("MARKET_PULSE_MOCK_SCENARIO"));
-        this.apiClient = new HttpClientTInvestApiClient(properties);
+        this.apiClient = new OkHttpTInvestApiClientReference(properties);
 
         // Семинар 7: котировки отслеживаемых инструментов — на диске, а не только в памяти
         // процесса. QuoteFileStoreReference — эталон; студенты на этапе 6 пишут свой.
